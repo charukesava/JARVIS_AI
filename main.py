@@ -47,21 +47,21 @@ CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "rey_shin
 
 class ConfigManager:
     DEFAULT = {
-        "api_key":          "",          # Primary Gemini key (AIzaSy...)
-        "gemini_key_2":     "",          # 2nd Gemini key for rotation
-        "gemini_key_3":     "",          # 3rd Gemini key for rotation
-        "groq_key":         "",          # Groq key (gsk_...) — FREE 14,400 req/day
-        "api_provider":     "gemini",    # "groq" | "gemini" | "openai"
-        "model":            "gemini-2.0-flash",
-        "groq_model":       "llama-3.3-70b-versatile",  # best free Groq model
-        "ai_enabled":       True,
-        "max_memory":       8,           # 8 messages = much less token usage
-        "user_name":        "Sir",
-        "tts_rate":         155,
-        "wake_word_enabled": True,
-        "autostart":        False,
-        "auto_listen":      True,
-    }
+    "api_provider": "gemini",
+    "model": "gemini-2.0-flash",
+    "groq_model": "llama-3.3-70b-versatile",
+
+    "ai_enabled": True,
+    "max_memory": 8,
+
+    "user_name": "Sir",
+
+    "tts_rate": 155,
+    "wake_word_enabled": True,
+
+    "autostart": False,
+    "auto_listen": True
+}
 
     def __init__(self):
         self.config = self.DEFAULT.copy()
@@ -75,7 +75,7 @@ class ConfigManager:
             except Exception:
                 pass
         # Auto-fix: Gemini key sent to OpenAI (starts with AIzaSy)
-        key = self.config.get("api_key", "")
+        key = GEMINI_API_KEY or ""
         if key.startswith("AIza") and self.config.get("api_provider") == "openai":
             self.config["api_provider"] = "gemini"
             if "gpt" in self.config.get("model", ""):
