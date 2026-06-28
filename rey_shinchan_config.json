@@ -1,0 +1,16 @@
+{
+  "api_key": "AIzaSyBFiYXMIdOr7LxGZYz6FYAt-KHdHGHr51E",
+  "gemini_key_2": "",
+  "gemini_key_3": "",
+  "groq_key": "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",
+  "api_provider": "gemini",
+  "model": "gemini-2.0-flash",
+  "groq_model": "llama-3.3-70b-versatile",
+  "ai_enabled": true,
+  "max_memory": 20,
+  "user_name": "Sir",
+  "tts_rate": 155,
+  "wake_word_enabled": true,
+  "autostart": true,
+  "auto_listen": true
+}
