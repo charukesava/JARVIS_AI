@@ -26,6 +26,23 @@ load_dotenv()
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+
+print("=" * 60)
+print("ENVIRONMENT CHECK")
+print("=" * 60)
+
+print("Gemini key loaded:", bool(GEMINI_API_KEY))
+print("Groq key loaded:", bool(GROQ_API_KEY))
+
+if GEMINI_API_KEY:
+    print("Gemini key starts with:", GEMINI_API_KEY[:10])
+
+if GROQ_API_KEY:
+    print("Groq key starts with:", GROQ_API_KEY[:10])
+
+print("=" * 60)
+
+
 import speech_recognition as sr
 import psutil
 
