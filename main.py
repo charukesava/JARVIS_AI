@@ -20,6 +20,12 @@ import time
 import winreg
 import math
 
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 import speech_recognition as sr
 import psutil
 
