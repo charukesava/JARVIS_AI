@@ -1,4 +1,11 @@
 {
+<<<<<<< HEAD
+=======
+  "api_key": "",
+  "gemini_key_2": "",
+  "gemini_key_3": "",
+  "groq_key": "",
+>>>>>>> 4ff839116d9ed52cfb13ee130e0cd28bef0ac61f
   "api_provider": "gemini",
   "model": "gemini-2.0-flash",
   "groq_model": "llama-3.3-70b-versatile",
@@ -12,6 +19,7 @@
   "wake_word_enabled": true,
 
   "autostart": true,
+<<<<<<< HEAD
   "auto_listen": true,
 
   "api_key": "",
@@ -19,3 +27,7 @@
   "gemini_key_3": "",
   "groq_key": ""
 }
+=======
+  "auto_listen": true
+}
+>>>>>>> 4ff839116d9ed52cfb13ee130e0cd28bef0ac61f
