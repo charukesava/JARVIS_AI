@@ -1,8 +1,8 @@
 {
-  "api_key": "AIzaSyBFiYXMIdOr7LxGZYz6FYAt-KHdHGHr51E",
+  "api_key": "",
   "gemini_key_2": "",
   "gemini_key_3": "",
-  "groq_key": "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",
+  "groq_key": "",
   "api_provider": "gemini",
   "model": "gemini-2.0-flash",
   "groq_model": "llama-3.3-70b-versatile",
