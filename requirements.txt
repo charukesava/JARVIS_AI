@@ -23,7 +23,7 @@ httpx==0.28.1
 idna==3.18
 proto-plus==1.28.0
 protobuf==5.29.6
-pyasn1==0.6.3
+pyasn1==0.6.5
 pyasn1_modules==0.4.2
 pycparser==3.0
 pydantic==2.13.4
