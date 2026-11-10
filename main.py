@@ -246,13 +246,21 @@ def is_online() -> bool:
 
 
 # Volume/mute helper
-_WS_SHELL = (
-    'powershell -NoProfile -NonInteractive -c '
-    '"$o=New-Object -ComObject WScript.Shell;$o.SendKeys([char]{code})"'
-)
 def _send_media_key(code: int):
-    subprocess.Popen(_WS_SHELL.format(code=code), shell=True,
-                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    subprocess.Popen(
+        ["powershell", "-NoProfile", "-NonInteractive", "-Command",
+         f"$o=New-Object -ComObject WScript.Shell;"
+         f"$o.SendKeys([char]{code})"],
+        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+    )
+
+
+def _open_target(target: str):
+    """Open a Windows URI, file association, or shell shortcut safely."""
+    if hasattr(os, "startfile"):
+        os.startfile(target)
+    else:
+        subprocess.Popen([target])
 
 
 def _launch_app_smart(app_name: str) -> bool:
@@ -440,8 +448,8 @@ def try_rule_command(command: str):
             if not killed:
                 # fallback: taskkill (handles UWP/packaged apps)
                 subprocess.run(
-                    f'taskkill /IM "{exe_name}" /F',
-                    shell=True, stdout=subprocess.DEVNULL,
+                    ["taskkill", "/IM", exe_name, "/F"],
+                    stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL
                 )
 
@@ -501,7 +509,7 @@ def try_rule_command(command: str):
 
     # ── App Control ──
     if "open chrome" in cmd or "open google chrome" in cmd:
-        subprocess.Popen(["start", "chrome"], shell=True)
+        subprocess.Popen(["chrome"])
         return f"Opening Google Chrome, {config.get('user_name')}.", True
 
     if "open notepad" in cmd:
@@ -517,7 +525,7 @@ def try_rule_command(command: str):
         return "Opening Calculator.", True
 
     if "open vs code" in cmd or "open visual studio code" in cmd:
-        subprocess.Popen(["code"], shell=True)
+        subprocess.Popen(["code"])
         return "Opening VS Code.", True
 
     if "open task manager" in cmd:
@@ -529,19 +537,19 @@ def try_rule_command(command: str):
         return "Opening Paint.", True
 
     if "open word" in cmd:
-        subprocess.Popen(["start", "winword"], shell=True)
+        subprocess.Popen(["winword"])
         return "Opening Microsoft Word.", True
 
     if "open excel" in cmd:
-        subprocess.Popen(["start", "excel"], shell=True)
+        subprocess.Popen(["excel"])
         return "Opening Microsoft Excel.", True
 
     if "open spotify" in cmd:
-        subprocess.Popen(["start", "spotify"], shell=True)
+        subprocess.Popen(["spotify"])
         return "Opening Spotify.", True
 
     if "open camera" in cmd:
-        subprocess.Popen(["start", "microsoft.windows.camera:"], shell=True)
+        _open_target("microsoft.windows.camera:")
         return "Opening Camera.", True
 
     # ── Social Media & Web Apps ──
@@ -556,7 +564,7 @@ def try_rule_command(command: str):
         if "whatsapp" in cmd:
             if not _launch_app_smart("whatsapp"):
                 try:
-                    subprocess.Popen(["start", "whatsapp:"], shell=True)
+                    _open_target("whatsapp:")
                 except Exception:
                     webbrowser.open("https://web.whatsapp.com")
             return "Opening WhatsApp.", True
@@ -576,7 +584,7 @@ def try_rule_command(command: str):
         if "telegram" in cmd:
             if not _launch_app_smart("telegram"):
                 try:
-                    subprocess.Popen(["start", "tg:"], shell=True)
+                    _open_target("tg:")
                 except Exception:
                     webbrowser.open("https://web.telegram.org")
             return "Opening Telegram.", True
@@ -818,47 +826,47 @@ def try_rule_command(command: str):
 
     if "windows settings" in cmd or ("open settings" in cmd and "bluetooth" not in cmd
                                      and "display" not in cmd):
-        subprocess.Popen(["start", "ms-settings:"], shell=True)
+        _open_target("ms-settings:")
         return "Opening Windows Settings.", True
 
     if "windows update" in cmd or "check for updates" in cmd:
-        subprocess.Popen(["start", "ms-settings:windowsupdate"], shell=True)
+        _open_target("ms-settings:windowsupdate")
         return "Opening Windows Update.", True
 
     if "device manager" in cmd:
-        subprocess.Popen(["devmgmt.msc"], shell=True)
+        _open_target("devmgmt.msc")
         return "Opening Device Manager.", True
 
     if "disk management" in cmd:
-        subprocess.Popen(["diskmgmt.msc"], shell=True)
+        _open_target("diskmgmt.msc")
         return "Opening Disk Management.", True
 
     if "event viewer" in cmd:
-        subprocess.Popen(["eventvwr.msc"], shell=True)
+        _open_target("eventvwr.msc")
         return "Opening Event Viewer.", True
 
     if "bluetooth settings" in cmd:
-        subprocess.Popen(["start", "ms-settings:bluetooth"], shell=True)
+        _open_target("ms-settings:bluetooth")
         return "Opening Bluetooth Settings.", True
 
     if "display settings" in cmd:
-        subprocess.Popen(["start", "ms-settings:display"], shell=True)
+        _open_target("ms-settings:display")
         return "Opening Display Settings.", True
 
     if "sound settings" in cmd or "audio settings" in cmd:
-        subprocess.Popen(["start", "ms-settings:sound"], shell=True)
+        _open_target("ms-settings:sound")
         return "Opening Sound Settings.", True
 
     if "night light" in cmd or "night mode" in cmd:
-        subprocess.Popen(["start", "ms-settings:nightlight"], shell=True)
+        _open_target("ms-settings:nightlight")
         return "Opening Night Light settings.", True
 
     if "dark mode" in cmd:
-        subprocess.Popen(["start", "ms-settings:colors"], shell=True)
+        _open_target("ms-settings:colors")
         return "Opening Colour settings for dark mode.", True
 
     if "privacy settings" in cmd:
-        subprocess.Popen(["start", "ms-settings:privacy"], shell=True)
+        _open_target("ms-settings:privacy")
         return "Opening Privacy Settings.", True
 
     # ── Folder shortcuts ──
@@ -886,7 +894,7 @@ def try_rule_command(command: str):
 
     # ── App Store / installs ──
     if "open store" in cmd or "microsoft store" in cmd or "windows store" in cmd:
-        subprocess.Popen(["start", "ms-windows-store:"], shell=True)
+        _open_target("ms-windows-store:")
         return "Opening Microsoft Store.", True
 
     if "install" in cmd and any(x in cmd for x in ["app", "application", "software", "program"]):
@@ -922,12 +930,12 @@ def try_rule_command(command: str):
     if "task view" in cmd or "virtual desktop" in cmd:
         os.system('powershell -command "$o=New-Object -ComObject WScript.Shell;'
                   '$o.SendKeys(\'^{ESC}\')"')
-        subprocess.Popen(["start", "ms-actioncenter:"], shell=True)
+        _open_target("ms-actioncenter:")
         return "Opening Task View.", True
 
     # ── Notifications / Action Centre ──
     if "action center" in cmd or "notification" in cmd:
-        subprocess.Popen(["start", "ms-actioncenter:"], shell=True)
+        _open_target("ms-actioncenter:")
         return "Opening Action Centre.", True
 
     # ── Open specific app by name (generic fallback) ──
@@ -944,9 +952,8 @@ def try_rule_command(command: str):
             if _launch_app_smart(app_q):
                 return f"Opening {app_q}.", True
             else:
-                # last resort: try desktop app shortcut via start command
-                subprocess.Popen(["start", "", app_q], shell=True,
-                                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                # Last resort: open the desktop app through Windows association.
+                _open_target(app_q)
                 return f"Trying to open {app_q}.", True
 
     # ═══════════════════════════════════════════════════════════════
@@ -1283,11 +1290,11 @@ class AIBrain:
     )
 
     CMD_MAP = {
-        "OPEN_CHROME":      lambda: subprocess.Popen(["start", "chrome"], shell=True),
+        "OPEN_CHROME":      lambda: subprocess.Popen(["chrome"]),
         "OPEN_NOTEPAD":     lambda: subprocess.Popen(["notepad.exe"]),
         "OPEN_EXPLORER":    lambda: subprocess.Popen(["explorer.exe"]),
         "OPEN_CALC":        lambda: subprocess.Popen(["calc.exe"]),
-        "OPEN_VSCODE":      lambda: subprocess.Popen(["code"], shell=True),
+        "OPEN_VSCODE":      lambda: subprocess.Popen(["code"]),
         "OPEN_TASKMANAGER": lambda: subprocess.Popen(["taskmgr.exe"]),
         "OPEN_PAINT":       lambda: subprocess.Popen(["mspaint.exe"]),
         "SCREENSHOT": lambda: __import__("pyautogui").screenshot(
