@@ -12,7 +12,5 @@
   "wake_word_enabled": true,
 
   "autostart": true,
-  "auto_listen": true,
-
-
+  "auto_listen": true
 }
