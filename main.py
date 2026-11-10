@@ -21,27 +21,10 @@ import winreg
 import math
 
 from dotenv import load_dotenv
-import os
 load_dotenv()
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-
-print("=" * 60)
-print("ENVIRONMENT CHECK")
-print("=" * 60)
-
-print("Gemini key loaded:", bool(GEMINI_API_KEY))
-print("Groq key loaded:", bool(GROQ_API_KEY))
-
-if GEMINI_API_KEY:
-    print("Gemini key starts with:", GEMINI_API_KEY[:10])
-
-if GROQ_API_KEY:
-    print("Groq key starts with:", GROQ_API_KEY[:10])
-
-print("=" * 60)
-
 
 import speech_recognition as sr
 import psutil
@@ -54,7 +37,7 @@ from PyQt6.QtWidgets import (
     QSystemTrayIcon, QMenu
 )
 from PyQt6.QtCore import Qt, QTimer, pyqtSignal, QObject
-from PyQt6.QtGui import QFont, QColor, QIcon, QPixmap, QColor as QC
+from PyQt6.QtGui import QFont, QColor, QIcon, QPixmap
 
 
 # ─────────────────────────────────────────────
@@ -2457,7 +2440,7 @@ class ReyShinchanWindow(QWidget):
         """Create a system tray icon so the app keeps running when closed."""
         # Create a tiny coloured icon programmatically (no external file needed)
         px = QPixmap(16, 16)
-        px.fill(QC("#00d4ff"))
+        px.fill(QColor("#00d4ff"))
         icon = QIcon(px)
 
         self._tray = QSystemTrayIcon(icon, self)
