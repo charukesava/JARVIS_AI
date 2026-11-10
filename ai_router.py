@@ -27,55 +27,55 @@ class AIRouter:
 
     def init_gemini(self):
 
-    print("\nInitializing Gemini...")
+        print("\nInitializing Gemini...")
 
-    if not GEMINI_API_KEY:
-        print("❌ GEMINI_API_KEY not found")
-        return
+        if not GEMINI_API_KEY:
+            print("❌ GEMINI_API_KEY not found")
+            return
 
-    try:
+        try:
 
-        import google.generativeai as genai
+            import google.generativeai as genai
 
-        genai.configure(api_key=GEMINI_API_KEY)
+            genai.configure(api_key=GEMINI_API_KEY)
 
-        self.gemini = genai.GenerativeModel(
-            "gemini-2.0-flash"
-        )
+            self.gemini = genai.GenerativeModel(
+                "gemini-2.0-flash"
+            )
 
-        print("✅ Gemini initialized successfully")
+            print("✅ Gemini initialized successfully")
 
-    except Exception:
+        except Exception:
 
-        print("❌ Gemini initialization failed")
+            print("❌ Gemini initialization failed")
 
-        traceback.print_exc()
+            traceback.print_exc()
     # Initialize Groq
     #####################################################
 
     def init_groq(self):
 
-    print("\nInitializing Groq...")
+        print("\nInitializing Groq...")
 
-    if not GROQ_API_KEY:
-        print("❌ GROQ_API_KEY not found")
-        return
+        if not GROQ_API_KEY:
+            print("❌ GROQ_API_KEY not found")
+            return
 
-    try:
+        try:
 
-        from groq import Groq
+            from groq import Groq
 
-        self.groq = Groq(
-            api_key=GROQ_API_KEY
-        )
+            self.groq = Groq(
+                api_key=GROQ_API_KEY
+            )
 
-        print("✅ Groq initialized successfully")
+            print("✅ Groq initialized successfully")
 
-    except Exception:
+        except Exception:
 
-        print("❌ Groq initialization failed")
+            print("❌ Groq initialization failed")
 
-        traceback.print_exc()
+            traceback.print_exc()
     # Gemini
     #####################################################
 
