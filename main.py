@@ -3172,7 +3172,6 @@ class CompanionWidget(QWidget):
         dlg.exec()
 
     def _toggle_log(self):
-        global _main_window
         if _main_window is None:
             return
         if _main_window.isVisible():
